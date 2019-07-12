@@ -139,6 +139,7 @@ def A_profit_k(N, M, alpha1, alpha2, A_price1, A_price2, B_price1, B_price2, k, 
 
 
 def B_profit_k(N, M, alpha1, alpha2, A_price1, A_price2, B_price1, B_price2, k, kind):
+    operator = N*M*alpha1*alpha2-1
     # k从零开始
     B_price1_changed = B_price1.copy()
     B_price2_changed = B_price2.copy()
@@ -153,25 +154,25 @@ def B_profit_k(N, M, alpha1, alpha2, A_price1, A_price2, B_price1, B_price2, k, 
         )/(1 - M*alpha1*alpha2/operator)
         if B_price1_changed[k] < 0:
             B_price1_changed[k] = 0
-        ABnm = nm(N, M, alpha1, alpha2, A_price1_changed,
-                  A_price2_changed, B_price1, B_price2)
+        ABnm = nm(N, M, alpha1, alpha2, A_price1,
+                  A_price2, B_price1_changed, B_price2_changed)
         A_n1 = ABnm[0:N]
         A_n2 = ABnm[N:N + M]
         if A_n1[k] == 1/N:
             B_price1_changed[k] = A_price1[k] - (
                 1 - 2/N + M*alpha1*alpha2 *
-                (np.sum(A_price1_changed)-np.sum(B_price1) -
-                 A_price1_changed[k]+B_price1[k])/operator
-                + alpha1*(np.sum(A_price2_changed) -
-                          np.sum(B_price2))/operator
+                (np.sum(A_price1)-np.sum(B_price1_changed) -
+                 A_price1[k]+B_price1_changed[k])/operator
+                + alpha1*(np.sum(A_price2) -
+                          np.sum(B_price2_changed))/operator
             )/(1 - M*alpha1*alpha2/operator)
         elif A_n1[k] == 0:
             B_price1_changed[k] = A_price1[k] - (
                 1 + M*alpha1*alpha2 *
-                (np.sum(A_price1_changed)-np.sum(B_price1) -
-                 A_price1_changed[k]+B_price1[k])/operator
-                + alpha1*(np.sum(A_price2_changed) -
-                          np.sum(B_price2))/operator
+                (np.sum(A_price1)-np.sum(B_price1_changed) -
+                 A_price1[k]+B_price1_changed[k])/operator
+                + alpha1*(np.sum(A_price2) -
+                          np.sum(B_price2_changed))/operator
             )/(1 - M*alpha1*alpha2/operator)
         if B_price1_changed[k] < 0:
             print('warning!')
@@ -187,25 +188,25 @@ def B_profit_k(N, M, alpha1, alpha2, A_price1, A_price2, B_price1, B_price2, k, 
         )/(1 - N*alpha1*alpha2/operator)
         if B_price2_changed[k] < 0:
             B_price2_changed[k] = 0
-        ABnm = nm(N, M, alpha1, alpha2, A_price1_changed,
-                  A_price2_changed, B_price1, B_price2)
+        ABnm = nm(N, M, alpha1, alpha2, A_price1,
+                  A_price2, B_price1_changed, B_price2_changed)
         A_n1 = ABnm[0:N]
         A_n2 = ABnm[N:N + M]
         if A_n2[k] == 1/M:
             B_price2_changed[k] = A_price2[k] - (
                 1 - 2/M + N*alpha1*alpha2 *
-                (np.sum(A_price2_changed)-np.sum(B_price2) -
-                 A_price2_changed[k]+B_price2[k])/operator
-                + alpha2*(np.sum(A_price1_changed) -
-                          np.sum(B_price1))/operator
+                (np.sum(A_price2)-np.sum(B_price2_changed) -
+                 A_price2[k]+B_price2_changed[k])/operator
+                + alpha2*(np.sum(A_price1) -
+                          np.sum(B_price1_changed))/operator
             )/(1 - N*alpha1*alpha2/operator)
         elif A_n2[k] == 0:
             B_price2_changed[k] = A_price2[k] - (
                 1 + N*alpha1*alpha2 *
-                (np.sum(A_price2_changed)-np.sum(B_price2) -
-                 A_price2_changed[k]+B_price2[k])/operator
-                + alpha2*(np.sum(A_price1_changed) -
-                          np.sum(B_price1))/operator
+                (np.sum(A_price2)-np.sum(B_price2_changed) -
+                 A_price2[k]+B_price2_changed[k])/operator
+                + alpha2*(np.sum(A_price1) -
+                          np.sum(B_price1_changed))/operator
             )/(1 - N*alpha1*alpha2/operator)
         if B_price2_changed[k] < 0:
             print('warning!')

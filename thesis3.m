@@ -1,153 +1,127 @@
-% syms alpha1 alpha2 n m real
-% syms i1 i2 j1 j2 ii jj real
-% syms sum_pa1_i1 sum_pa1_i1_i2 pb1 sum_pa2_j1 sum_pa2_j1_j2 pb2 pa1i pa2j real
-% syms na1 na2 real
-% operator = i2*j2*alpha1*alpha2-1;
-% eq1 = 2*alpha1*na2*i2 - 2*na1 - (sum_pa1_i1+sum_pa1_i1_i2-i2*pb1) - i2*alpha1 - i2*(i2-1)/n + i2;
-% eq2 = 2*alpha2*na1*j2 - 2*na2 - (sum_pa2_j1+sum_pa2_j1_j2-j2*pb2) - j2*alpha2 - j2*(j2-1)/m + j2;
-% sol1 = solve(eq1, eq2, na1, na2);
-% na1 = sol1.na1;
-% na2 = sol1.na2;
-% eq3 = (i1-1)*alpha1*na2 - sum_pa1_i1/2 + (i1-1)/2 - alpha1*(i1-1)/2 - (i1-1)*i1/(2*n);
-% eq4 = (j1-1)*alpha2*na1 - sum_pa2_j1/2 + (j1-1)/2 - alpha2*(j1-1)/2 - (j1-1)*j1/(2*m);
-% sol2 = solve(eq3, eq4, sum_pa1_i1, sum_pa2_j1);
-% sum_pa1_i1 = sol2.sum_pa1_i1;
-% sum_pa2_j1 = sol2.sum_pa2_j1;
-% sum_pa1_i1 = simplify(subs(sum_pa1_i1));
-% sum_pa2_j1 = simplify(subs(sum_pa2_j1));
-% na1 = simplify(subs(na1));
-% na2 = simplify(subs(na2));
-% nb1 = 1-na1;
-% nb2 = 1-na2;
-% eq5 = na1-(i1-1)/n + (alpha1*alpha2*j2*(i2-i1+1)/(2*operator)-1/2)*sum_pa1_i1_i2 + ((i2-i1+1)*alpha2/(2*operator))*sum_pa2_j1_j2;
-% eq6 = na2-(j1-1)/m + (alpha1*alpha2*i2*(j2-j1+1)/(2*operator)-1/2)*sum_pa2_j1_j2 + ((j2-j1+1)*alpha1/(2*operator))*sum_pa1_i1_i2;
-% eq7 = nb1-(n-i2)/n + pb1*(i2-i1+1)/(2*operator) + (n-i2)/n + pb2*alpha2*i2*(j2-j1+1)/(2*operator);
-% eq8 = nb2-(m-j2)/m + pb2*(j2-j1+1)/(2*operator) + (m-j2)/m + pb1*alpha1*j2*(i2-i1+1)/(2*operator);
-% sol3 = solve(eq5, eq6, eq7, eq8, sum_pa1_i1_i2, sum_pa2_j1_j2, pb1, pb2);
-% sum_pa1_i1_i2 = sol3.sum_pa1_i1_i2;
-% sum_pa2_j1_j2 = sol3.sum_pa2_j1_j2;
-% pb1 = sol3.pb1;
-% pb2 = sol3.pb2;
-% sum_pa1_i1_i2 = simplify(subs(sum_pa1_i1_i2));
-% sum_pa2_j1_j2 = simplify(subs(sum_pa2_j1_j2));
-% pb1 = simplify(subs(pb1));
-% pb2 = simplify(subs(pb2));
-% xi = alpha1*na2 - (pa1i-pb1)/2 + 1/2 - alpha1/2;
-% yj = alpha2*na1 - (pa2j-pb1)/2 + 1/2 - alpha2/2;
-% eq9 = xi-(ii-1)/n + sum_pa1_i1_i2*alpha1*alpha2*j2/(2*operator) - pa1i/2 + sum_pa2_j1_j2*alpha2/(2*operator);
-% eq10 = yj-(jj-1)/m + sum_pa2_j1_j2*alpha1*alpha2*i2/(2*operator) - pa2j/2 + sum_pa1_i1_i2*alpha1/(2*operator);
-% sol4 = solve(eq9, eq10, pa1i, pa2j);
-% pa1i = sol4.pa1i;
-% pa2j = sol4.pa2j;
-% pa1i = simplify(subs(pa1i));
-% pa2j = simplify(subs(pa2j));
+% text(.5,.5,['$',latex(Pb_1),'$'],'interpreter','Latex','HorizontalAlignment','center','fontsize',20)
+% single-homing and single-homing
+
+% 一方歧视另一方不歧视
+syms N M alpha1 alpha2 V_1 V_2 real
+syms Sigma_pa1 Sigma_pa2 real
+syms Sigma_xa Sigma_ya xb yb real
+syms xai yaj Pa_1i Pa_2j Pb_1 Pb_2 real
+syms ii jj positive
+syms na_1 na_2 nb_1 nb_2 real
+syms delta1 delta2 real
+delta1 = 0;
+delta2 = 0;
+eq1 = 2*(alpha1+alpha2)*na_2 - alpha1 + 1 + Pb_1 - (2*na_1 + delta1);
+eq2 = 2*(alpha1+alpha2)*na_1 - alpha2 + 1 + Pb_2 - (2*na_2 + delta2);
+sol1 = solve(eq1, eq2, na_1, na_2);
+na_1 = sol1.na_1;
+na_2 = sol1.na_2;
+nb_1 = simplify(subs(1-na_1));
+nb_2 = simplify(subs(1-na_2));
+pi_B = simplify(subs(Pb_1*nb_1 + Pb_2*nb_2));
+eq3 = simplify(subs(diff(pi_B, Pb_1)));
+eq4 = simplify(subs(diff(pi_B, Pb_2)));
+sol2 = solve(eq3, eq4, Pb_1, Pb_2);
+Pb_1 = sol2.Pb_1;
+Pb_2 = sol2.Pb_2;
+na_1 = simplify(subs(na_1));
+na_2 = simplify(subs(na_2));
+% [ii_temp1, params, conds] = solve(Pa_1i, ii, 'ReturnConditions', true);
+% ii_temp1 = simplify(subs(ii_temp1));
+% [ii_temp2, params2, conds2] = solve(xi-ii/n, ii, 'ReturnConditions', true);
+% ii_temp2 = simplify(subs(ii_temp2));
+% hh=simplify(subs(ii_temp2-ii_temp1));
+% operator2 = 4 - m*n*(alpha1+alpha2)*(alpha1+alpha2);
+% na1_true = 1/2 + (4*Pb_1 + (alpha1*alpha1-alpha2*alpha2)*m + 2*(alpha1+alpha2)*m*Pb_2 - 2*(alpha1-alpha2))/(2*operator2) - 1/(2*n);
+% na2_true = 1/2 + (4*Pb_2 + (alpha2*alpha2-alpha1*alpha1)*n + 2*(alpha1+alpha2)*n*Pb_1 - 2*(alpha2-alpha1))/(2*operator2) - 1/(2*m);
+% nb1_true = 1-na1_true;
+% nb2_true = 1-na2_true;
+% eq5 = nb1_true - Pb_1*2/operator2 - Pb_2*(alpha1+alpha2)*n/operator2;
+% eq6 = nb2_true - Pb_2*2/operator2 - Pb_1*(alpha1+alpha2)*m/operator2;
+% sol4 = solve(eq5, eq6, Pb_1, Pb_2);
+% Pb_1 = sol4.Pb_1;
+% Pb_2 = sol4.Pb_2;
+% Pb_1 = simplify(subs(Pb_1));
+% Pb_2 = simplify(subs(Pb_2));
+% nb1_true = simplify(subs(nb1_true));
+% nb2_true = simplify(subs(nb2_true));
 % xi = simplify(subs(xi));
 % yj = simplify(subs(yj));
 % temp = simplify(subs(ya1-yb1));
-% [value2, params, conds] = solve(temp, value2, 'ReturnConditions', true);
-% value2 = simplify(subs(value2));
+% [V_2, params, conds] = solve(temp, V_2, 'ReturnConditions', true);
+% V_2 = simplify(subs(V_2));
 
-% syms n m alpha1 alpha2 value1 real
-% syms sum_pa1 pb1 sum_pa2 pb2 real
-% syms sum_xa sum_y xb real
-% syms xai yj pa1i pa2j pb1 pb2 real
-% syms i1 j1 positive
-% operator = alpha1*alpha2*m + alpha1*alpha2*m*n - 2;
-% eq1 = n*value1 + n*alpha1*sum_y - alpha1*n*(m-1)/2 - sum_pa1 - sum_xa;
-% eq2 = value1 + alpha1*(m+1)/2 - alpha1*sum_y - pb1 - (1-xb);
-% eq4 = m*alpha2*sum_xa - alpha2*m*(n-1)/2 - sum_pa2 - 2*sum_y - m*alpha2*(1-xb) + m*pb2 + m;
-% sol1 = solve(eq1, eq2, eq4, sum_xa, sum_y, xb);
-% sum_xa = sol1.sum_xa;
-% sum_y = sol1.sum_y;
-% xb = sol1.xb;
-% xai = value1 + alpha1*sum_y - alpha1*(m-1)/2 - pa1i;
-% yj = (alpha2*sum_xa - alpha2*(n-1)/2 - pa2j - alpha2*(1-xb) + pb2 + 1)/2;
-% xai = simplify(subs(xai));
-% yj = simplify(subs(yj));
-% eq7 = sum_xa - (n-1)/2 + sum_pa1*(2-alpha1*alpha2*m)/operator + sum_pa2*n*alpha2/operator;
-% eq8 = sum_y - (m-1)/2 + sum_pa2/operator + sum_pa1*m*alpha1/operator;
-% eq9 = 1 - xb + pb1*(2-alpha1*alpha2*m*n)/operator + pb2*alpha2/operator;
-% eq10 = (m+1)/2 - sum_y + pb2*m/operator + pb1*m*alpha1/operator;
-% sol3 = solve(eq7, eq8, eq9, eq10, sum_pa1, sum_pa2, pb1, pb2);
-% sum_pa1 = sol3.sum_pa1;
-% sum_pa2 = sol3.sum_pa2;
-% pb1 = sol3.pb1;
-% pb2 = sol3.pb2;
-% sum_pa1 = simplify(subs(sum_pa1));
-% sum_pa2 = simplify(subs(sum_pa2));
-% pb1 = simplify(subs(pb1));
-% pb2 = simplify(subs(pb2));
-% xai = simplify(subs(xai));
-% yj = simplify(subs(yj));
-% xb = simplify(subs(xb));
-% eq11 = xai - (i1-1)/n + sum_pa1*m*alpha1*alpha2/operator - pa1i + sum_pa2*alpha2/operator;
-% eq12 = yj - (j1-1)/m + sum_pa2*(n*alpha1*alpha2+alpha1*alpha2)/(2*operator) - pa2j/2 + sum_pa1*alpha1/operator;
-% sol4 = solve(eq11, eq12, pa1i, pa2j);
-% pa1i = sol4.pa1i;
-% pa2j = sol4.pa2j;
-% pa1i = simplify(subs(pa1i));
-% pa2j = simplify(subs(pa2j));
-% pb1 = simplify(subs(pb1));
-% pb2 = simplify(subs(pb2));
-% xai = simplify(subs(xai));
-% yj = simplify(subs(yj));
-% xb = simplify(subs(xb));
-% h = (1-xb)/pb1;
-% h = simplify(subs(h));
-% i1=(n+1)/2; % n是奇数的情况
-% xai = simplify(subs(xai));
-% temp = simplify(subs(xai-1/2));
-% [value1, params, conds] = solve(temp, value1, 'ReturnConditions', true);
-% value1 = simplify(subs(value1));
-% temp = simplify(subs(xb-1/2));
-% [value1, params, conds] = solve(temp, value1, 'ReturnConditions', true);
-% value1 = simplify(subs(value1));
-% i1=(n+1)/2; % n是奇数的情况
-% xai = simplify(subs(xai));
-% temp = simplify(subs(xb-xai));
-% [value1, params, conds] = solve(temp, value1, 'ReturnConditions', true);
-% value1 = simplify(subs(value1));
+% 一方歧视另一方不歧视，双边市场均分成两段
+% V_1 + alpha1*na_2 < 1/2 时
 
-% syms n m alpha1 alpha2 value1 value2 real
-% syms sum_pa1 pb1 sum_pa2 pb2 real
-% syms sum_xa sum_ya xb yb real
-% syms xai yaj pa1i pa2j pb1 pb2 real
-% syms i1 j1 positive
+
+% 一方歧视另一方不歧视，两边市场全都没有竞争的情况
 % operator = m*n*alpha1*alpha2-1;
 % operator2 = alpha1*alpha2-1;
-% eq1 = n*value1 + n*alpha1*sum_ya - alpha1*n*(m-1)/2 - sum_pa1 - sum_xa;
-% eq2 = value1 + alpha1*(1-yb) - pb1 - (1-xb);
-% eq3 = m*value2 + m*alpha2*sum_xa - alpha2*m*(n-1)/2 - sum_pa2 - sum_ya;
-% eq4 = value2 + alpha2*(1-xb) - pb2 - (1-yb);
-% sol1 = solve(eq1, eq2, eq3, eq4, sum_xa, sum_ya, xb, yb);
-% sum_xa = sol1.sum_xa;
-% sum_ya = sol1.sum_ya;
-% xb = sol1.xb;
-% yb = sol1.yb;
-% xai = value1 + alpha1*sum_ya - alpha1*(m-1)/2 - pa1i;
-% yaj = value2 + alpha2*sum_xa - alpha2*(n-1)/2 - pa2j;
-% xai = simplify(subs(xai));
-% yaj = simplify(subs(yaj));
-% eq7 = sum_xa - (n-1)/2 + sum_pa1/operator + sum_pa2*n*alpha2/operator;
-% eq8 = sum_ya - (m-1)/2 + sum_pa2/operator + sum_pa1*m*alpha1/operator;
-% eq9 = 1 - xb + pb1/operator2 + pb2*alpha2/operator2;
-% eq10 = 1 - yb + pb2/operator2 + pb1*alpha1/operator2;
-% sol3 = solve(eq7, eq8, eq9, eq10, sum_pa1, sum_pa2, pb1, pb2);
-% sum_pa1 = sol3.sum_pa1;
-% sum_pa2 = sol3.sum_pa2;
-% pb1 = sol3.pb1;
-% pb2 = sol3.pb2;
-% xai = simplify(subs(xai));
-% yaj = simplify(subs(yaj));
+% eq1 = V_1 + alpha1*na_2 - na_1;
+% eq2 = V_2 + alpha2*na_1 - na_2;
+% eq3 = V_1 + alpha1*nb_2 - Pb_1 - nb_1;
+% eq4 = V_2 + alpha2*nb_1 - Pb_2 - nb_2;
+% sol1 = solve(eq1, eq2, eq3, eq4, na_1, na_2, nb_1, nb_2);
+% na_1 = sol1.na_1;
+% na_2 = sol1.na_2;
+% nb_1 = sol1.nb_1;
+% nb_2 = sol1.nb_2;
+% eq5 = nb_1 + Pb_1/operator2 + Pb_2*alpha2/operator2;
+% eq6 = nb_2 + Pb_2/operator2 + Pb_1*alpha1/operator2;
+% sol2 = solve(eq5, eq6, Pb_1, Pb_2);
+% Pb_1 = sol2.Pb_1;
+% Pb_2 = sol2.Pb_2;
+% Pa_1i = V_1 + alpha1*na_2 - ii/n;
+% Pa_2j = V_2 + alpha2*na_1 - jj/m;
+% nb_1 = simplify(subs(nb_1));
+% nb_2 = simplify(subs(nb_2));
+% eq7 = na_1 + nb_1 - 1;
+% [V_1_temp, ~, ~] = solve(eq7, V_1, 'ReturnConditions', true);
+% V_1_temp = simplify(subs(V_1_temp));
+% eq8 = na_2 + nb_2 - 1;
+% [V_2_temp, params, conds] = solve(eq8, V_2, 'ReturnConditions', true);
+% V_2_temp = simplify(subs(V_2_temp));
+% sol3 = solve(eq7, eq8, V_1, V_2);
+% V_1 = sol3.V_1;
+% V_2 = sol3.V_2;
+% Pb_1 = simplify(subs(Pb_1));
+% Pb_2 = simplify(subs(Pb_2));
+% na_1 = simplify(subs(na_1));
+% na_2 = simplify(subs(na_2));
+
+% 一边市场有竞争，另一边市场没竞争的情况
+% eq1 = V_1 + alpha1*na_2 - na_1;
+% eq2 = na_2 + nb_2 - 1;
+% eq3 = V_1 + alpha1*nb_2 - Pb_1 - nb_1;
+% eq4 = alpha2*na_1 - na_2 - alpha2*nb_1 + Pb_2 + nb_2;
+% sol1 = solve(eq1, eq2, eq3, eq4, na_1, na_2, nb_1, nb_2);
+% na_1 = sol1.na_1;
+% na_2 = sol1.na_2;
+% nb_1 = sol1.nb_1;
+% nb_2 = sol1.nb_2;
+% eq5 = nb_1 + Pb_1*diff(nb_1, Pb_1) + Pb_2*diff(nb_2, Pb_1);
+% eq6 = nb_2 + Pb_2*diff(nb_2, Pb_2) + Pb_1*diff(nb_1, Pb_2);
+% sol2 = solve(eq5, eq6, Pb_1, Pb_2);
+% Pb_1 = simplify(subs(sol2.Pb_1));
+% Pb_2 = simplify(subs(sol2.Pb_2));
+% na_1 = simplify(subs(na_1));
+% na_2 = simplify(subs(na_2));
+% nb_1 = simplify(subs(nb_1));
+% nb_2 = simplify(subs(nb_2));
+% eq7 = na_1 + nb_1 - 1;
+% [V_1_temp, ~, ~] = solve(eq7, V_1, 'ReturnConditions', true);
+% V_1_temp = simplify(subs(V_1_temp));
+
 % xb = simplify(subs(xb));
 % yb = simplify(subs(yb));
-% eq11 = xai - (i1-1)/n + sum_pa1*m*alpha1*alpha2/operator - pa1i + sum_pa2*alpha2/operator;
-% eq12 = yaj - (j1-1)/m + sum_pa2*n*alpha1*alpha2/operator - pa2j + sum_pa1*alpha1/operator;
-% sol4 = solve(eq11, eq12, pa1i, pa2j);
-% pa1i = sol4.pa1i;
-% pa2j = sol4.pa2j;
-% pa1i = simplify(subs(pa1i));
-% pa2j = simplify(subs(pa2j));
+% eq11 = xai - (i1-1)/n + Sigma_pa1*m*alpha1*alpha2/operator - Pa_1i + Sigma_pa2*alpha2/operator;
+% eq12 = yaj - (j1-1)/m + Sigma_pa2*n*alpha1*alpha2/operator - Pa_2j + Sigma_pa1*alpha1/operator;
+% sol4 = solve(eq11, eq12, Pa_1i, Pa_2j);
+% Pa_1i = sol4.Pa_1i;
+% Pa_2j = sol4.Pa_2j;
+% Pa_1i = simplify(subs(Pa_1i));
+% Pa_2j = simplify(subs(Pa_2j));
 % xai = simplify(subs(xai));
 % yaj = simplify(subs(yaj));
 % n=2;
@@ -156,25 +130,49 @@
 % j1=2;
 % xai = simplify(subs(xai));
 % temp = simplify(subs(xai-xb));
-% [value1, params, conds] = solve(temp, value1, 'ReturnConditions', true);
-% value1 = simplify(subs(value1));
+% [V_1, params, conds] = solve(temp, V_1, 'ReturnConditions', true);
+% V_1 = simplify(subs(V_1));
 % xai = simplify(subs(xai));
 % xb = simplify(subs(xb));
 % yaj = simplify(subs(yaj));
 % yb = simplify(subs(yb));
-% pa1i = simplify(subs(pa1i));
-% pa2j = simplify(subs(pa2j));
-% pb1 = simplify(subs(pb1));
-% pb2 = simplify(subs(pb2));
-% text(.5,.5,['$',latex(pb1),'$'],'interpreter','Latex','HorizontalAlignment','center','fontsize',20)
+% Pa_1i = simplify(subs(Pa_1i));
+% Pa_2j = simplify(subs(Pa_2j));
+% Pb_1 = simplify(subs(Pb_1));
+% Pb_2 = simplify(subs(Pb_2));
 % temp = simplify(subs(yaj-yb));
-% [value2, params, conds] = solve(temp, value2, 'ReturnConditions', true);
-% value2 = simplify(subs(value2));
+% [V_2, params, conds] = solve(temp, V_2, 'ReturnConditions', true);
+% V_2 = simplify(subs(V_2));
 % xai = simplify(subs(xai));
 % xb = simplify(subs(xb));
 % yaj = simplify(subs(yaj));
 % yb = simplify(subs(yb));
-% pa1i = simplify(subs(pa1i));
-% pa2j = simplify(subs(pa2j));
-% pb1 = simplify(subs(pb1));
-% pb2 = simplify(subs(pb2));
+% Pa_1i = simplify(subs(Pa_1i));
+% Pa_2j = simplify(subs(Pa_2j));
+% Pb_1 = simplify(subs(Pb_1));
+% Pb_2 = simplify(subs(Pb_2));
+
+% single-homing and single-homing: 只有一侧企业，分情况讨论，情况1-1
+% syms h g real
+% eq1 = V_1 + alpha1*na_2 - Pa_1i - na_1;
+% eq2 = V_2 + alpha2*na_1 - Pa_2j - na_2;
+% eq3 = -h + Pa_1i + alpha2*na_2;
+% eq4 = -g + Pa_2j + alpha1*na_1;
+% sol1 = solve(eq1, eq2, eq3, eq4, h, g, na_1, na_2);
+% g = sol1.g;
+% h = sol1.h;
+% na_1 = sol1.na_1;
+% na_2 = sol1.na_2;
+% i1 = simplify(subs(na_1-h));
+% j1 = simplify(subs(na_2-g));
+% i1 = -(n*(- V_1*alpha2^2 - V_2*alpha2 + V_1 + V_2*alpha1))/(alpha1*alpha2 - 1);
+% j1 = -(m*(- V_2*alpha1^2 - V_1*alpha1 + V_2 + V_1*alpha2))/(alpha1*alpha2 - 1);
+% eq5 = i1*alpha1*diff(na_2, Pa_1i) + h + Pa_1i*diff(na_1, Pa_1i) + j1*alpha2*diff(na_1, Pa_1i) + Pa_2j*diff(na_2, Pa_1i);
+% eq6 = j1*alpha2*diff(na_1, Pa_2j) + g + Pa_2j*diff(na_2, Pa_2j) + i1*alpha1*diff(na_2, Pa_2j) + Pa_1i*diff(na_1, Pa_2j);
+% sol2 = solve(eq5, eq6, Pa_1i, Pa_2j);
+% Pa_1i = sol2.Pa_1i;
+% Pa_2j = sol2.Pa_2j;
+% na_1 = simplify(subs(na_1));
+% na_2 = simplify(subs(na_2));
+% i1 = simplify(subs(i1));
+% j1 = simplify(subs(j1));

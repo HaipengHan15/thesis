@@ -9,17 +9,32 @@ font1 = {'family': 'Times New Roman',
          'size': 23,
          }
 
-'''NM = np.arange(1, 11)
-profit = [0.4899322175, 0.39817792453875966, 0.469256256094979, 0.5131004117650224, 0.5695896279880446,
-          0.5877135899733421, 0.6168219934949997, 0.6278313269791992, 0.6445080995095251, 0.6519128975388344]
-result = np.array(profit)
-plt.plot(NM, result)  # 双方都歧视定价时的利润
-plt.xlabel('NM', fontsize=12)
-plt.ylabel(u'利润', fontsize=12)
-pylab.show()'''
-if 1 < 2:
-    print('aaa')
-elif 1 < 3:
-    print('bbb')
+flag = 1
+if flag == 1:
+    alpha1 = np.linspace(0, 4, 2000)
+    alpha2 = np.linspace(0, 4, 2000)
+    # 构造网格
+    alpha1, alpha2 = np.meshgrid(alpha1,alpha2)
 else:
-    print('ccc')
+    alpha1 = 0
+    alpha2 = 1.99
+constraint1 = alpha1 + alpha2
+constraint2 = alpha1*alpha2
+SW_single1 = alpha1*alpha2 - 5/4
+SW_single2 = (alpha1**2 + alpha2**2 +3*alpha1*alpha2 - 3)/4
+SW_multi1 = 2*alpha1 + 2*alpha2 - 2
+pi_single2 = - (alpha1**2 + 6*alpha1*alpha2 + alpha2**2)/16 + 1/2
+pi_multi1 = alpha1 + alpha2 - 2
+pi_A_2 = - (alpha1+alpha2)/2 + 1
+# 绘制等高线
+plt.contour(alpha1, alpha2, constraint1-2, 0, colors='black')
+plt.contour(alpha1, alpha2, constraint1-4, 0, colors='black')
+plt.contour(alpha1, alpha2, constraint2-1, 0, colors='black')
+# plt.contour(alpha1, alpha2, SW_single1-SW_single2, 0, colors='blue')
+plt.contour(alpha1, alpha2, SW_multi1-SW_single2, 0, colors='yellow')
+plt.contour(alpha1, alpha2, pi_multi1-pi_single2, 0, colors='pink')
+# plt.contour(alpha1, alpha2, z5, 0, colors='red')
+plt.axis('scaled')
+plt.show()
+
+# print(z5)

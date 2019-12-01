@@ -1,17 +1,33 @@
-syms alpha1 alpha2 value1 value2 real
-syms pa1 pa2 pb1 pb2 real
-syms x1 ya1 yb1 real
-operator = alpha1*alpha2-1;
-eq1 = alpha1*(ya1+yb1) - (pa1-pb1) - alpha1 + 1 - 2*x1;
-eq2 = value2 + alpha2*x1 - pa2 - ya1;
-eq3 = value2 + alpha2*(1-x1) - pb2 - (1-yb1);
-sol1 = solve(eq1, eq2, eq3, x1, ya1, yb1);
-x1 = sol1.x1;
-ya1 = sol1.ya1;
-yb1 = sol1.yb1;
-x1 = simplify(subs(x1));
-ya1 = simplify(subs(ya1));
-yb1 = simplify(subs(yb1));
+% syms alpha1 alpha2 value1 value2 n m real
+% syms pa1 pa2 pb1 pb2 real
+% syms x1 ya1 yb1 real
+% syms x y delta_1 delta_2 real
+% operator = alpha1*alpha2-1;
+% eq1 = delta_1 + x - 1 - (delta_2-1)/alpha2;
+% eq2 = delta_2 + y - 1 - (delta_1-1)/alpha1;
+% sol1 = solve(eq1, eq2, delta_1, delta_2);
+% delta_1 = sol1.delta_1;
+% delta_2 = sol1.delta_2;
+% na1 = 1/2 + (delta_2-1)/(2*alpha2);
+% na2 = 1/2 + (delta_1-1)/(2*alpha1);
+% nb1 = simplify(subs(1-na1));
+% nb2 = simplify(subs(1-na2));
+% eq3 = nb1 + x/(2*operator) + y*alpha2/(2*operator);
+% eq4 = nb2 + y/(2*operator) + x*alpha1/(2*operator);
+% sol2 = solve(eq3, eq4, x, y);
+% x = sol2.x;
+% y = sol2.y;
+% delta_1 = simplify(subs(delta_1));
+% delta_2 = simplify(subs(delta_2));
+% na1 = simplify(subs(na1));
+% na2 = simplify(subs(na2));
+% nb1 = simplify(subs(nb1));
+% nb2 = simplify(subs(nb2));
+
+% yb1 = sol1.yb1;
+% x1 = simplify(subs(x1));
+% ya1 = simplify(subs(ya1));
+% yb1 = simplify(subs(yb1));
 % eq5 = x1 + pa1/operator + pa2*alpha2/operator;
 % eq6 = ya1 + pa2/operator + pa1*alpha1/operator;
 % eq7 = 1-xb1 + pb1/operator + pb2*alpha2/operator;

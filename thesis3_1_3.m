@@ -2,7 +2,7 @@
 % single-homing and single-homing & multi-homing and single-homing
 % group-1卖家，group-2买家
 % 
-% multi-homing and single-homing: Group-1 PD定价，Group-2统一定价
+% multi-homing and multi-homing: Group-1 PD定价，Group-2统一定价
 syms V_1 V_2 V alpha1 alpha2 t1 t2 t c1 c2 c positive
 syms Pa_11 Pa_12 Pa_2 Pb_11 Pb_12 Pb_1 Pb_2 real
 syms na_1 na_2 nb_1 nb_2 positve
